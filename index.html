@@ -14,7 +14,6 @@
            CSS VARIABLES & RESET
            ========================================= */
         :root {
-            /* Palette: Modern Indian Wedding */
             --primary-color: #800000; /* Deep Maroon */
             --accent-color: #C5A059;  /* Soft Gold */
             --bg-color: #FAFAFA;      /* Cream/Off-White */
@@ -94,7 +93,7 @@
             top: 0;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
-            padding: 1rem 0;
+            padding: 0.5rem 0;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
@@ -106,12 +105,21 @@
             align-items: center;
         }
 
-        .logo {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            font-weight: bold;
-            text-decoration: none;
+        /* Logo Styling - CSS Trick to recolor PNG */
+        .logo-link {
+            display: block;
+            height: 50px; /* Fixed height for container */
+            overflow: hidden; /* Crucial: hides the original image pushed out of view */
+        }
+
+        .logo-img {
+            height: 100%;
+            width: auto;
+            display: block;
+            /* The Trick: Create a maroon shadow 100px below, then shift the image up 100px.
+               This hides the original image and shows only the maroon shadow. */
+            filter: drop-shadow(0px 100px 0px var(--primary-color));
+            transform: translateY(-100px);
         }
 
         .nav-links {
@@ -145,12 +153,11 @@
            ========================================= */
         #hero {
             height: 100vh;
-            /* Using local image file IMG_5169.JPG */
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
                         url('IMG_5169.JPG');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Parallax effect */
+            background-attachment: fixed; /* Parallax effect for Desktop */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -170,6 +177,7 @@
             letter-spacing: 2px;
             margin-bottom: 2rem;
             font-weight: 300;
+            text-transform: uppercase;
         }
 
         /* Countdown */
@@ -202,30 +210,33 @@
         }
 
         /* =========================================
-           ABOUT SECTION
+           ABOUT & GALLERY SECTIONS
            ========================================= */
-        .story-grid {
+        .story-container {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* New Gallery Grid */
+        .gallery-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .story-img {
-            position: relative;
-        }
-
-        .story-img img {
+        .gallery-item img {
+            width: 100%;
+            height: 400px; /* Fixed height for uniformity */
+            object-fit: cover;
             border-radius: 8px;
-            box-shadow: 20px 20px 0 var(--accent-color);
-            /* Using local image file IMG_5169.JPG */
-            /* Ensure this file exists in your folder */
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .story-text p {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            color: #555;
+        .gallery-item img:hover {
+            transform: scale(1.02);
         }
 
         /* =========================================
@@ -402,6 +413,14 @@
            RESPONSIVE MEDIA QUERIES
            ========================================= */
         @media (max-width: 768px) {
+            
+            /* FIX FOR MOBILE IMAGE NOT LOADING */
+            #hero {
+                /* iOS has issues with background-attachment: fixed */
+                background-attachment: scroll; 
+                background-position: center;
+            }
+
             .hero-content h1 { font-size: 3rem; }
             
             .hamburger { display: block; }
@@ -409,7 +428,7 @@
             .nav-links {
                 position: absolute;
                 right: 0px;
-                top: 60px;
+                top: 70px; /* Adjusted for logo height */
                 background-color: white;
                 flex-direction: column;
                 width: 100%;
@@ -421,18 +440,18 @@
             }
 
             .nav-links.active {
-                max-height: 300px;
+                max-height: 350px;
                 border-bottom: 1px solid #eee;
             }
 
             .nav-links li { padding: 15px 0; }
-
-            .story-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .story-img img { box-shadow: 10px 10px 0 var(--accent-color); }
             
             .countdown { gap: 1rem; }
             .time-box { min-width: 60px; padding: 0.5rem; }
             .time-box span { font-size: 1.5rem; }
+            
+            /* Gallery Fix for Mobile */
+            .gallery-item img { height: 300px; }
         }
     </style>
 </head>
@@ -440,13 +459,17 @@
 
     <nav id="navbar">
         <div class="container nav-container">
-            <a href="#" class="logo">A & S</a>
+            <a href="#hero" class="logo-link">
+                <img src="Aditya & Shriya Logo.png" alt="A & S" class="logo-img">
+            </a>
+            
             <div class="hamburger" id="hamburger">
                 ☰
             </div>
             <ul class="nav-links" id="nav-links">
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#about">Our Story</a></li>
+                <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#events">Events</a></li>
                 <li><a href="#venue">Venue</a></li>
                 <li><a href="#registry">Registry</a></li>
@@ -476,19 +499,29 @@
                 <h2>Our Story</h2>
                 <span></span>
             </div>
-            <div class="story-grid">
-                <div class="story-img">
-                    <img src="IMG_5169.JPG" alt="Aditya and Shriya">
+            <div class="story-container">
+                <p style="font-size: 1.2rem; line-height: 2;">
+                    It started with a cup of coffee. What was supposed to be a quick meet-up turned into hours of conversation about travel, food, and the future. From long drives to discovering new cafes, our journey has been nothing short of magical. We are so excited to start this new chapter of our lives together and cannot wait to celebrate our special day with our favorite people.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2>The Happy Couple</h2>
+                <span></span>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="IMG_4940.JPG" alt="Gallery Image 1" loading="lazy">
                 </div>
-                <div class="story-text">
-                    <h3>How We Met</h3>
-                    <br>
-                    <p>
-                        It started with a cup of coffee in San Jose. What was supposed to be a one-day meet-up turned into a week-long affair just like Rehna Hai Tere Dil Mein. Yes, that was our Bollywood moment where we would dress-up and take approvals from Friends and Family about our attires! 
-                    </p>
-                    <p>
-                        We are so excited to start this new chapter of our lives together and cannot wait to celebrate our special day with our favorite people.
-                    </p>
+                <div class="gallery-item">
+                    <img src="IMG_5168.JPG" alt="Gallery Image 2" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG_6023.JPG" alt="Gallery Image 3" loading="lazy">
                 </div>
             </div>
         </div>
@@ -608,7 +641,7 @@
             <a href="#" class="rsvp-btn" target="_blank">RSVP Now</a>
 
             <div class="share-section" style="margin-top: 4rem; border: none; background: transparent;">
-                <span class="hashtag">#ShriGotAdicted</span>
+                <span class="hashtag">#AdityaWedsShriya</span>
                 <button class="copy-btn" id="shareBtn" onclick="copyToClipboard()">
                     Copy Website Link
                 </button>
@@ -633,15 +666,13 @@
             navLinks.classList.toggle('active');
         });
 
-        // Close menu when a link is clicked
         navItems.forEach(item => {
             item.addEventListener('click', () => {
                 navLinks.classList.remove('active');
             });
         });
 
-        // 2. Countdown Timer Logic
-        // UPDATED: Date set to June 22nd, 2026
+        // 2. Countdown Timer Logic (June 22, 2026)
         const weddingDate = new Date('June 22, 2026 00:00:00').getTime();
 
         const timer = setInterval(function() {
