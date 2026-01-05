@@ -7,20 +7,23 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
         /* =========================================
            CSS VARIABLES & RESET
            ========================================= */
         :root {
-            --primary-color: #800000; /* Deep Maroon */
-            --accent-color: #C5A059;  /* Soft Gold */
-            --bg-color: #FAFAFA;      /* Cream/Off-White */
-            --text-dark: #333333;
-            --text-light: #FFFFFF;
-            --font-heading: 'Playfair Display', serif;
-            --font-body: 'Lato', sans-serif;
+            --primary-color: #700F1C; /* Deep Burgundy */
+            --accent-color: #D4AF37;  /* Metallic Gold */
+            --bg-color: #F9F6F0;      /* Warm Cream */
+            --white: #FFFFFF;
+            --text-dark: #2C2C2C;
+            --text-light: #666666;
+            
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-script: 'Great Vibes', cursive;
+            --font-body: 'Montserrat', sans-serif;
         }
 
         * {
@@ -37,52 +40,106 @@
             font-family: var(--font-body);
             background-color: var(--bg-color);
             color: var(--text-dark);
-            line-height: 1.6;
+            line-height: 1.8;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(112, 15, 28, 0.03) 0%, transparent 20%);
         }
 
         /* =========================================
-           TYPOGRAPHY & UTILITIES
+           TYPOGRAPHY
            ========================================= */
         h1, h2, h3 {
             font-family: var(--font-heading);
-            font-weight: 700;
-        }
-
-        h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 1rem;
             color: var(--primary-color);
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-header span {
+        h1 { font-size: 4rem; font-weight: 700; line-height: 1.1; }
+        h2 { font-size: 3rem; text-align: center; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        h3 { font-size: 2rem; margin-bottom: 1rem; }
+        
+        .script-font {
+            font-family: var(--font-script);
+            color: var(--accent-color);
+            font-size: 3.5rem;
             display: block;
-            width: 60px;
-            height: 3px;
-            background-color: var(--accent-color);
-            margin: 10px auto;
+            margin-bottom: 0.5rem;
+            text-transform: none;
         }
 
+        p { font-weight: 300; color: var(--text-light); }
+
+        /* =========================================
+           UTILITIES & LAYOUT
+           ========================================= */
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
         section {
-            padding: 80px 0;
+            padding: 100px 0;
+            position: relative;
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
+        /* Divider Decoration */
+        .section-divider {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+        .section-divider::after {
+            content: "✦";
+            display: inline-block;
+        }
+
+        /* Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           WELCOME OVERLAY (Autoplay Fix)
+           ========================================= */
+        #welcome-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        
+        .enter-btn {
+            margin-top: 2rem;
+            padding: 15px 40px;
+            background: var(--primary-color);
+            color: white;
+            border: 1px solid var(--primary-color);
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .enter-btn:hover {
+            background: transparent;
+            color: var(--primary-color);
         }
 
         /* =========================================
@@ -90,13 +147,12 @@
            ========================================= */
         nav {
             position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 0.5rem 0;
+            top: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
         }
 
         .nav-container {
@@ -105,33 +161,28 @@
             align-items: center;
         }
 
-        /* Logo Styling */
-        .logo-link {
-            display: block;
-            height: 50px;
-            overflow: hidden;
-        }
-
-        .logo-img {
-            height: 100%;
-            width: auto;
-            display: block;
-            filter: drop-shadow(0px 100px 0px var(--primary-color));
-            transform: translateY(-100px);
+        .logo {
+            font-family: var(--font-script);
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding-left: 10px;
         }
 
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 30px;
+            gap: 40px;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--text-dark);
-            font-size: 0.9rem;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            font-weight: 500;
             transition: color 0.3s;
         }
 
@@ -139,11 +190,11 @@
             color: var(--accent-color);
         }
 
-        /* Mobile Menu */
         .hamburger {
             display: none;
-            cursor: pointer;
             font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
         }
 
         /* =========================================
@@ -151,294 +202,275 @@
            ========================================= */
         #hero {
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
-                        url('IMG_5169.JPG');
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('IMG_5169.JPG');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            color: var(--text-light);
+            color: white;
             padding: 0;
         }
 
         .hero-content h1 {
             font-size: 5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin: 1rem 0;
         }
 
-        .hero-content p {
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            margin-bottom: 2rem;
-            font-weight: 300;
+        .pre-title, .sub-title {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
+            font-weight: 300;
         }
 
         /* Countdown */
         .countdown {
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
+            gap: 3rem;
+            margin-top: 3rem;
         }
 
         .time-box {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            padding: 1rem;
-            border-radius: 8px;
-            min-width: 80px;
-            border: 1px solid rgba(255,255,255,0.3);
+            text-align: center;
         }
 
         .time-box span {
-            display: block;
-            font-size: 2rem;
-            font-weight: bold;
             font-family: var(--font-heading);
+            font-size: 3rem;
+            display: block;
+            line-height: 1;
         }
 
         .time-box label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
         }
 
         /* =========================================
-           ABOUT & GALLERY SECTIONS
+           OUR STORY (Alternating Layout)
            ========================================= */
-        .story-container {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
+        .story-item {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            margin-bottom: 4rem;
         }
 
-        .story-container h3 {
+        .story-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .story-text {
+            flex: 1;
+            padding: 2rem;
+            border-left: 2px solid var(--accent-color);
+        }
+        
+        .story-item:nth-child(even) .story-text {
+            border-left: none;
+            border-right: 2px solid var(--accent-color);
+            text-align: right;
+        }
+
+        .story-text h3 {
             color: var(--primary-color);
-            margin-top: 2rem;
-            margin-bottom: 0.5rem;
-            font-size: 1.5rem;
-            font-family: var(--font-heading);
+            font-size: 2.2rem;
         }
 
-        .story-container p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-            color: #555;
+        .story-img {
+            flex: 1;
+            height: 400px;
+        }
+        
+        .story-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 10px 10px 0px rgba(212, 175, 55, 0.2);
         }
 
-        /* Gallery Grid */
+        /* =========================================
+           GALLERY
+           ========================================= */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 20px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            position: relative;
+            height: 400px;
+            border-radius: 2px;
         }
 
         .gallery-item img {
             width: 100%;
-            height: 400px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease;
         }
 
-        .gallery-item img:hover {
-            transform: scale(1.02);
+        .gallery-item:hover img {
+            transform: scale(1.05);
         }
 
         /* =========================================
-           EVENTS SECTION
+           EVENTS
            ========================================= */
-        #events {
-            background-color: #fff;
-        }
-
+        #events { background: white; }
+        
         .events-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
         }
 
         .event-card {
             background: var(--bg-color);
-            border: 1px solid #eee;
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: var(--accent-color);
+            transform: scaleX(0);
+            transition: transform 0.3s;
         }
 
         .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
         }
 
-        .event-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+        .event-card:hover::before {
+            transform: scaleX(1);
         }
 
         .event-card h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .event-details {
-            margin-top: 1rem;
-            font-size: 0.95rem;
-            color: #666;
-        }
-
-        .event-details div {
+            font-size: 2rem;
             margin-bottom: 0.5rem;
         }
 
-        /* =========================================
-           VENUE SECTION
-           ========================================= */
-        .venue-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
+        .event-meta {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            display: block;
         }
 
-        .venue-address {
-            margin-bottom: 2rem;
-            font-size: 1.2rem;
-        }
-
-        .map-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            overflow: hidden;
-            border-radius: 8px;
-            border: 4px solid var(--accent-color);
-        }
-
-        .map-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
+        .event-details div {
+            margin-bottom: 5px;
+            color: #555;
         }
 
         /* =========================================
-           REGISTRY & RSVP
+           VENUE & REGISTRY
            ========================================= */
+        .venue-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .venue-info { flex: 1; text-align: center; }
+        .venue-map { flex: 1; height: 400px; border: 10px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .venue-map iframe { width: 100%; height: 100%; border: none; }
+
         #registry {
             background-color: var(--primary-color);
-            color: var(--text-light);
+            color: white;
             text-align: center;
         }
 
-        #registry h2 {
-            color: var(--text-light);
-        }
-        
-        #registry span {
-            background-color: var(--accent-color);
-        }
+        #registry h2, #registry p { color: white; }
+        #registry .section-divider { color: var(--accent-color); }
 
-        .registry-text {
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 1.1rem;
-        }
-
-        /* Venmo Button */
         .venmo-btn {
             display: inline-block;
-            background-color: var(--accent-color);
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            background: var(--accent-color);
             color: white;
-            padding: 0.8rem 2rem;
             text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
             border-radius: 50px;
-            margin-top: 1.5rem;
-            transition: transform 0.3s ease;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
         }
 
         .venmo-btn:hover {
-            transform: scale(1.05);
-            background-color: #b08d3e;
+            background: white;
+            color: var(--primary-color);
         }
 
-        #rsvp {
+        /* =========================================
+           RSVP & FOOTER
+           ========================================= */
+        .rsvp-container {
             text-align: center;
-            background: linear-gradient(to bottom, var(--bg-color), #fff);
+            background: white;
+            padding: 4rem;
+            border: 1px solid var(--accent-color);
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Corner decorations using CSS gradients */
+        .rsvp-container::before {
+            content: "";
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid var(--accent-color);
+            pointer-events: none;
         }
 
         .rsvp-btn {
             display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem 3rem;
-            font-size: 1.2rem;
-            text-decoration: none;
-            border-radius: 50px;
-            margin-top: 2rem;
-            transition: background 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(128, 0, 0, 0.3);
-        }
-
-        .rsvp-btn:hover {
-            background-color: #600000;
-            transform: scale(1.05);
-        }
-
-        /* =========================================
-           SHARE & FOOTER
-           ========================================= */
-        .share-section {
-            text-align: center;
-            padding: 3rem 0;
-            background-color: #fff;
-            border-top: 1px solid #eee;
-        }
-
-        .hashtag {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .copy-btn {
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            border-radius: 4px;
-            font-family: var(--font-body);
-            transition: all 0.2s;
-        }
-
-        .copy-btn:hover {
             background: var(--primary-color);
             color: white;
+            padding: 15px 50px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2rem;
+            transition: background 0.3s;
         }
 
+        .rsvp-btn:hover { background: #500a13; }
+
         footer {
-            background-color: #1a1a1a;
+            background: #222;
             color: #888;
             text-align: center;
-            padding: 2rem 0;
-            font-size: 0.9rem;
+            padding: 3rem 0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         /* =========================================
@@ -446,109 +478,104 @@
            ========================================= */
         .music-widget {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
             z-index: 2000;
-            text-align: right;
+            display: flex;
+            align-items: flex-end;
+            flex-direction: column;
         }
 
-        .music-toggle {
-            background-color: var(--accent-color);
-            color: white;
+        .music-disc {
             width: 50px;
             height: 50px;
+            background: var(--accent-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            font-size: 1.5rem;
-            transition: transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            animation: spin 4s linear infinite;
+            animation-play-state: paused;
+            color: white;
+            font-size: 1.2rem;
         }
 
-        .music-toggle:hover {
-            transform: scale(1.1);
+        .music-disc.playing {
+            animation-play-state: running;
         }
 
-        .music-frame-container {
-            margin-bottom: 10px;
-            display: block; /* Attempt to show by default to encourage interaction */
-            border: 4px solid var(--accent-color);
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .youtube-hidden {
+            width: 300px;
+            height: 170px; /* Small player */
             border-radius: 8px;
             overflow: hidden;
-            width: 280px;
-            background: #000;
-            transition: opacity 0.5s ease;
+            margin-bottom: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.4s;
+            position: absolute;
+            bottom: 60px;
+            right: 0;
         }
 
-        .music-frame-container.hidden {
-            display: none;
+        .music-widget:hover .youtube-hidden,
+        .youtube-hidden.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
         }
 
         /* =========================================
-           RESPONSIVE MEDIA QUERIES
+           RESPONSIVE
            ========================================= */
         @media (max-width: 768px) {
-            
-            #hero {
-                background-attachment: scroll; 
-                background-position: center;
-            }
-
-            .hero-content h1 { font-size: 3rem; }
+            h1 { font-size: 3rem; }
+            .script-font { font-size: 2.5rem; }
+            .story-item, .story-item:nth-child(even) { flex-direction: column; gap: 1rem; }
+            .story-text { border: none !important; text-align: center !important; padding: 1rem; }
+            .venue-wrapper { flex-direction: column; }
+            .venue-map { width: 100%; }
+            .countdown { gap: 1rem; }
+            .time-box span { font-size: 2rem; }
             
             .hamburger { display: block; }
-            
             .nav-links {
                 position: absolute;
-                right: 0px;
-                top: 70px;
-                background-color: white;
+                top: 70px; left: 0; width: 100%;
+                background: white;
                 flex-direction: column;
-                width: 100%;
+                padding: 2rem;
+                gap: 1.5rem;
                 text-align: center;
-                gap: 0;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease;
+                clip-path: circle(0% at 100% 0);
+                transition: clip-path 0.5s ease-in-out;
             }
-
             .nav-links.active {
-                max-height: 350px;
-                border-bottom: 1px solid #eee;
-            }
-
-            .nav-links li { padding: 15px 0; }
-            
-            .countdown { gap: 1rem; }
-            .time-box { min-width: 60px; padding: 0.5rem; }
-            .time-box span { font-size: 1.5rem; }
-            
-            .gallery-item img { height: 300px; }
-
-            /* Music Widget Adjustments for Mobile */
-            .music-widget {
-                bottom: 15px;
-                right: 15px;
+                clip-path: circle(150% at 100% 0);
             }
         }
     </style>
 </head>
 <body>
 
-    <nav id="navbar">
+    <div id="welcome-overlay">
+        <h1 style="color: var(--primary-color); font-size: 2.5rem; margin-bottom: 1rem;">Aditya & Shriya</h1>
+        <p style="text-transform: uppercase; letter-spacing: 3px;">The Wedding Celebration</p>
+        <button class="enter-btn" onclick="enterSite()">Enter Celebration</button>
+    </div>
+
+    <nav>
         <div class="container nav-container">
-            <a href="#hero" class="logo-link">
-                <img src="Aditya & Shriya Logo.png" alt="A & S" class="logo-img">
-            </a>
-            
-            <div class="hamburger" id="hamburger">
-                ☰
-            </div>
+            <a href="#hero" class="logo">A & S</a>
+            <div class="hamburger" onclick="toggleMenu()">☰</div>
             <ul class="nav-links" id="nav-links">
                 <li><a href="#hero">Home</a></li>
-                <li><a href="#about">Our Story</a></li>
+                <li><a href="#story">Our Story</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#events">Events</a></li>
                 <li><a href="#venue">Venue</a></li>
@@ -559,281 +586,226 @@
     </nav>
 
     <section id="hero">
-        <div class="hero-content">
-            <p>WE ARE GETTING MARRIED</p>
-            <h1>Aditya & Shriya</h1>
-            <p>GREATER NOIDA, INDIA</p>
+        <div class="hero-content reveal">
+            <p class="pre-title">We Are Getting Married</p>
+            <h1>Aditya <span style="font-family: var(--font-script); color: var(--accent-color); font-size: 0.8em;">&</span> Shriya</h1>
+            <p class="sub-title">Greater Noida, India | June 2026</p>
             
-            <div class="countdown" id="countdown">
+            <div class="countdown">
                 <div class="time-box"><span id="days">00</span><label>Days</label></div>
-                <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+                <div class="time-box"><span id="hours">00</span><label>Hrs</label></div>
                 <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
                 <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
             </div>
         </div>
     </section>
 
-    <section id="about">
+    <section id="story">
         <div class="container">
-            <div class="section-header">
-                <h2>Our Story</h2>
-                <span></span>
+            <div class="section-divider">Our Love Story</div>
+            
+            <div class="story-item reveal">
+                <div class="story-text">
+                    <h3>The Bollywood Beginning</h3>
+                    <p>It started with a simple cup of coffee and a conversation we didn’t want to end. What was meant to be a quick meet-up turned into a whirlwind week—our own <em>Rehna Hai Tere Dil Mein</em> moment.</p>
+                </div>
+                <div class="story-img">
+                    <img src="IMG_4940.JPG" alt="First Meet">
+                </div>
             </div>
-            <div class="story-container">
-                <h3>Our Bollywood Beginning</h3>
-                <p>
-                    It all started with a simple cup of coffee and a conversation that we didn’t want to end. What was meant to be a quick one-day meet-up quickly transformed into a whirlwind, week-long affair—a real-life tribute to Maddy and Reena from <em>Rehna Hai Tere Dil Mein</em>. Right then and there, in the middle of our very own Bollywood moment, we knew this wasn't just a chance encounter; it was the start of a grand adventure.
-                </p>
 
-                <h3>Love Across State Lines</h3>
-                <p>
-                    Life soon tested our spirit as we navigated the 1,700 miles between Austin and Sunnyvale. Distance became our backdrop, but it never slowed us down. Our relationship flourished through endless WhatsApp video calls, creative "online dates," and surprise gifts that crossed time zones. Every notification on our phones was a reminder that no matter how many miles lay between Texas and California, we were always moving in the same direction.
-                </p>
+            <div class="story-item reveal">
+                <div class="story-text">
+                    <h3>Love Across Miles</h3>
+                    <p>1,700 miles between Austin and Sunnyvale couldn't keep us apart. Through video calls and flights across time zones, we built a love that knew no distance.</p>
+                </div>
+                <div class="story-img">
+                    <img src="IMG_5168.JPG" alt="Long Distance">
+                </div>
+            </div>
 
-                <h3>From "Yes" to "I Do"</h3>
-                <p>
-                    The ultimate surprise arrived on October 4th, just as Shriya was preparing to celebrate her birthday. Aditya took the leap and proposed, turning a birthday wish into a lifelong promise. With a resounding "YES!" the celebrations moved from the U.S. to the heart of India. By November, we were surrounded by the warmth of our families for our Roka, officially blending our two worlds into one.
-                </p>
-
-                <h3>The Next Great Chapter</h3>
-                <p>
-                    Now, we are ready to trade the long-distance flights for a permanent front-row seat to each other's lives. We are so incredibly excited to begin this new chapter and can’t wait to celebrate our special day with the people who have cheered us on every step of the way. Get ready—the best is yet to come!
-                </p>
+            <div class="story-item reveal">
+                <div class="story-text">
+                    <h3>The Proposal</h3>
+                    <p>On October 4th, a birthday wish turned into a lifelong promise. Aditya got down on one knee, and the celebrations moved from the US to India for our Roka.</p>
+                </div>
+                <div class="story-img">
+                    <img src="IMG_6023.JPG" alt="Proposal">
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="gallery">
+    <section id="gallery" style="background: white;">
         <div class="container">
-            <div class="section-header">
-                <h2>The Happy Couple</h2>
-                <span></span>
-            </div>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="IMG_4940.JPG" alt="Gallery Image 1" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="IMG_5168.JPG" alt="Gallery Image 2" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="IMG_6023.JPG" alt="Gallery Image 3" loading="lazy">
-                </div>
+            <div class="section-divider">Captured Moments</div>
+            <div class="gallery-grid reveal">
+                <div class="gallery-item"><img src="IMG_4940.JPG" loading="lazy"></div>
+                <div class="gallery-item"><img src="IMG_5168.JPG" loading="lazy"></div>
+                <div class="gallery-item"><img src="IMG_6023.JPG" loading="lazy"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80" loading="lazy"></div> 
             </div>
         </div>
     </section>
 
     <section id="events">
         <div class="container">
-            <div class="section-header">
-                <h2>The Celebrations</h2>
-                <span></span>
-            </div>
-            <div class="events-grid">
-                <div class="event-card">
-                    <div class="event-icon">💍</div>
-                    <h3>Sagaai</h3>
-                    <div class="event-details">
-                        <div><strong>Date:</strong> June 21st, 2026</div>
-                        <div><strong>Time:</strong> 12:00 PM Onwards</div>
-                        <div><strong>Dress Code (Male):</strong> Traditional / Jodhpuri Kurta </div>
-                        <div><strong>Dress Code (Female):</strong> Traditional / Rajputana Lehenga </div>
-                    </div>
-                </div>
+            <div class="section-divider">The Celebrations</div>
+            <div class="events-grid reveal">
                 
                 <div class="event-card">
-                    <div class="event-icon">🎶💃</div>
-                    <h3>Sangeet</h3>
+                    <span class="event-meta">June 21st • 12:00 PM</span>
+                    <h3>Sagaai</h3>
                     <div class="event-details">
-                        <div><strong>Date:</strong> June 21st, 2026</div>
-                        <div><strong>Time:</strong> 8:00 PM Onwards</div>
-                        <div><strong>Dress Code (Male):</strong> Indo-Western / Glitz & Glam / Black-Tie </div>
-                        <div><strong>Dress Code (Female):</strong> Indo-Western / Glitz & Glam / One-Piece </div>
+                        <div>Traditional / Jodhpuri & Rajputana</div>
+                        <p>A formal engagement ceremony to kickstart the festivities.</p>
                     </div>
                 </div>
 
                 <div class="event-card">
-                    <div class="event-icon">🌼💛🌼</div>
+                    <span class="event-meta">June 21st • 8:00 PM</span>
+                    <h3>Sangeet</h3>
+                    <div class="event-details">
+                        <div>Indo-Western / Glitz & Glam</div>
+                        <p>A night of music, dance, and celebration.</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <span class="event-meta">June 22nd • 10:00 AM</span>
                     <h3>Haldi</h3>
                     <div class="event-details">
-                        <div><strong>Date:</strong> June 22nd, 2026</div>
-                        <div><strong>Time:</strong> 10:00 AM Onwards</div>
-                        <div><strong>Dress Code:</strong> Anything Yellow or Orange </div>
+                        <div>Yellow or Orange Attire</div>
+                        <p>Blessing the couple with turmeric and love.</p>
                     </div>
                 </div>
-                
-                <div class="event-card">
-                    <div class="event-icon">🥂👰🏻🤵🏻🕊</div>
-                    <h3>The Wedding</h3>
+
+                <div class="event-card" style="background-color: var(--primary-color); color: white;">
+                    <span class="event-meta" style="color: var(--accent-color);">June 22nd • 5:00 PM</span>
+                    <h3 style="color: white;">The Wedding</h3>
                     <div class="event-details">
-                        <div><strong>Date:</strong> June 22nd, 2026</div>
-                        <div><strong>Time:</strong> Baraat at 5:00 PM</div>
-                        <div><strong>Dress Code:</strong> Traditional Indian or Western </div>
+                        <div style="color: #ddd;">Traditional Indian</div>
+                        <p style="color: #ccc;">Baraat followed by Varmala and Pheras.</p>
                     </div>
                 </div>
-                
-                <div class="event-card">
-                    <div class="event-icon">🔥</div>
-                    <h3>Pheras</h3>
-                    <div class="event-details">
-                        <div><strong>Date:</strong> June 22nd, 2026</div>
-                        <div><strong>Time:</strong> 8:00 PM</div>
-                        <div><strong>Dress Code:</strong> Traditional Indian or Western </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
 
     <section id="venue">
         <div class="container">
-            <div class="section-header">
-                <h2>The Venue</h2>
-                <span></span>
-            </div>
-            <div class="venue-content">
-                <h3>Stellar Gymkhana</h3>
-                <p class="venue-address">
-                    Knowledge Park II, Greater Noida, Uttar Pradesh 201310
-                </p>
-                
-                <div class="map-container">
-                    <iframe 
-                        src="https://maps.google.com/maps?q=Stellar+Gymkhana+Greater+Noida&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                        width="600" 
-                        height="450" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
+            <div class="section-divider">The Venue</div>
+            <div class="venue-wrapper reveal">
+                <div class="venue-info">
+                    <h2 style="font-size: 2.5rem;">Stellar Gymkhana</h2>
+                    <p style="font-size: 1.2rem; color: var(--primary-color); margin-bottom: 2rem;">Greater Noida, Uttar Pradesh</p>
+                    <p>A luxurious oasis blending modern amenities with traditional charm. Perfect for our big fat Indian wedding.</p>
+                    <br>
+                    <a href="https://goo.gl/maps/placeholder" target="_blank" class="enter-btn" style="padding: 10px 30px; font-size: 1rem;">Get Directions</a>
+                </div>
+                <div class="venue-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.636603957262!2d77.5029!3d28.4905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cc76566088339%3A0x6c637b3149524029!2sStellar%20Gymkhana!5e0!3m2!1sen!2sin!4v1700000000000" loading="lazy"></iframe>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="registry">
-        <div class="container">
-            <div class="section-header">
-                <h2>Gift Registry</h2>
-                <span></span>
-            </div>
-            <div class="registry-text">
-                <p>Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, a contribution towards our honeymoon would be warmly appreciated.</p>
-                <br>
-                <p><em>(No Boxed Gifts Please)</em></p>
-                
-                <a href="https://venmo.com/aditya2garg" class="venmo-btn" target="_blank">
-                    Contribute via Venmo (@aditya2garg)
-                </a>
-            </div>
+        <div class="container reveal">
+            <div class="section-divider" style="color: var(--accent-color);">Registry</div>
+            <p style="max-width: 600px; margin: 0 auto; color: rgba(255,255,255,0.8);">Your presence is the greatest gift. However, if you wish to contribute to our new beginning, we would appreciate a contribution towards our honeymoon.</p>
+            <a href="https://venmo.com/aditya2garg" class="venmo-btn" target="_blank">Contribute via Venmo</a>
         </div>
     </section>
 
     <section id="rsvp">
         <div class="container">
-            <div class="section-header">
-                <h2>Are You Coming?</h2>
-                <span></span>
-            </div>
-            <p>Please RSVP by May 1st, 2026 so we can save you a seat!</p>
-            
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf2VCQRQ3dSgpRG2p3rMYlc06jBtLu6vWJJ51WkF1eg913wgA/viewform" class="rsvp-btn" target="_blank">RSVP Now</a>
-
-            <div class="share-section" style="margin-top: 4rem; border: none; background: transparent;">
-                <span class="hashtag">#ShriGotAdicted</span>
-                <button class="copy-btn" id="shareBtn" onclick="copyToClipboard()">
-                    Copy Website Link
-                </button>
-                <p id="copyMsg" style="font-size: 0.8rem; margin-top: 5px; opacity: 0; transition: opacity 0.3s; color: var(--primary-color);">Copied!</p>
+            <div class="rsvp-container reveal">
+                <h2 style="color: var(--primary-color);">Are You Attending?</h2>
+                <p>Please RSVP by May 1st, 2026</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf2VCQRQ3dSgpRG2p3rMYlc06jBtLu6vWJJ51WkF1eg913wgA/viewform" class="rsvp-btn" target="_blank">RSVP Now</a>
+                
+                <div style="margin-top: 3rem;">
+                    <p class="script-font" style="font-size: 2rem;">#ShriGotAdicted</p>
+                </div>
             </div>
         </div>
     </section>
 
+    <footer>
+        <p>&copy; 2026 Aditya & Shriya. Forever Begins Now.</p>
+    </footer>
+
     <div class="music-widget">
-        <div class="music-frame-container" id="musicContainer">
-            <iframe width="100%" height="155" src="https://www.youtube.com/embed/NFsEqOBG51M?controls=1&autoplay=1&loop=1&playlist=NFsEqOBG51M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="music-toggle" onclick="toggleMusic()" title="Play/Hide Music">
+        <div class="youtube-hidden" id="video-container">
+            </div>
+        <div class="music-disc" id="music-toggle" onclick="togglePlayer()">
             🎵
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>© 2026 Aditya & Shriya. Made with Love.</p>
-        </div>
-    </footer>
-
     <script>
-        // 1. Mobile Menu Toggle
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('nav-links');
-        const navItems = document.querySelectorAll('.nav-links li a');
+        // 1. SCROLL ANIMATION
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
+        // 2. MOBILE MENU
+        function toggleMenu() {
+            document.getElementById('nav-links').classList.toggle('active');
+        }
 
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
+        // 3. MUSIC & WELCOME LOGIC
+        // We inject the iframe only after user clicks "Enter" to ensure autoplay works
+        var playerContainer = document.getElementById('video-container');
+        var musicDisc = document.getElementById('music-toggle');
+        var isPlaying = false;
 
-        // 2. Countdown Timer Logic (June 22, 2026)
+        function enterSite() {
+            var overlay = document.getElementById('welcome-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 800);
+            
+            // Inject YouTube Iframe with Autoplay
+            // Using a playlist of the same video ensures looping
+            playerContainer.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/NFsEqOBG51M?autoplay=1&loop=1&playlist=NFsEqOBG51M&controls=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+            
+            musicDisc.classList.add('playing');
+            isPlaying = true;
+        }
+
+        function togglePlayer() {
+            // Simple visual toggle for the widget box
+            var widget = document.querySelector('.youtube-hidden');
+            widget.classList.toggle('active');
+        }
+
+        // 4. COUNTDOWN
         const weddingDate = new Date('June 22, 2026 00:00:00').getTime();
-
         const timer = setInterval(function() {
             const now = new Date().getTime();
-            const distance = weddingDate - now;
-
-            if (distance < 0) {
+            const dist = weddingDate - now;
+            if (dist < 0) {
                 clearInterval(timer);
-                document.getElementById("countdown").innerHTML = "<h2>We Are Married!</h2>";
                 return;
             }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+            document.getElementById("days").innerText = Math.floor(dist / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = Math.floor((dist % (1000 * 60)) / 1000).toString().padStart(2, '0');
         }, 1000);
-
-        // 3. Copy URL to Clipboard
-        function copyToClipboard() {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                const msg = document.getElementById('copyMsg');
-                const btn = document.getElementById('shareBtn');
-                
-                btn.innerText = "Link Copied!";
-                msg.style.opacity = "1";
-                
-                setTimeout(() => {
-                    msg.style.opacity = "0";
-                    btn.innerText = "Copy Website Link";
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        }
-
-        // 4. Toggle Music Widget
-        function toggleMusic() {
-            const container = document.getElementById('musicContainer');
-            // Simply toggle visibility
-            if (container.style.display === 'none' || container.style.display === '') {
-                container.style.display = 'block';
-            } else {
-                container.style.display = 'none';
-            }
-        }
     </script>
 </body>
 </html>
