@@ -108,15 +108,14 @@
         /* Logo Styling - CSS Trick to recolor PNG */
         .logo-link {
             display: block;
-            height: 50px; /* Fixed height for container */
-            overflow: hidden; /* Crucial: hides the original image pushed out of view */
+            height: 50px;
+            overflow: hidden;
         }
 
         .logo-img {
             height: 100%;
             width: auto;
             display: block;
-            /* The Trick: Create a maroon shadow 100px below, then shift the image up 100px. */
             filter: drop-shadow(0px 100px 0px var(--primary-color));
             transform: translateY(-100px);
         }
@@ -156,7 +155,7 @@
                         url('IMG_5169.JPG');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Parallax effect for Desktop */
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -232,7 +231,7 @@
             color: #555;
         }
 
-        /* New Gallery Grid */
+        /* Gallery Grid */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -242,7 +241,7 @@
 
         .gallery-item img {
             width: 100%;
-            height: 400px; /* Fixed height for uniformity */
+            height: 400px;
             object-fit: cover;
             border-radius: 8px;
             transition: transform 0.3s ease;
@@ -443,13 +442,61 @@
         }
 
         /* =========================================
+           MUSIC WIDGET
+           ========================================= */
+        .music-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            text-align: right;
+        }
+
+        .music-toggle {
+            background-color: var(--accent-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .music-frame-container {
+            margin-bottom: 10px;
+            display: none; /* Hidden by default */
+            border: 4px solid var(--accent-color);
+            border-radius: 8px;
+            overflow: hidden;
+            width: 280px;
+            background: #000;
+        }
+
+        .music-frame-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================
            RESPONSIVE MEDIA QUERIES
            ========================================= */
         @media (max-width: 768px) {
             
-            /* FIX FOR MOBILE IMAGE NOT LOADING */
             #hero {
-                /* iOS has issues with background-attachment: fixed */
                 background-attachment: scroll; 
                 background-position: center;
             }
@@ -461,7 +508,7 @@
             .nav-links {
                 position: absolute;
                 right: 0px;
-                top: 70px; /* Adjusted for logo height */
+                top: 70px;
                 background-color: white;
                 flex-direction: column;
                 width: 100%;
@@ -483,8 +530,13 @@
             .time-box { min-width: 60px; padding: 0.5rem; }
             .time-box span { font-size: 1.5rem; }
             
-            /* Gallery Fix for Mobile */
             .gallery-item img { height: 300px; }
+
+            /* Music Widget Adjustments for Mobile */
+            .music-widget {
+                bottom: 15px;
+                right: 15px;
+            }
         }
     </style>
 </head>
@@ -703,6 +755,15 @@
         </div>
     </section>
 
+    <div class="music-widget">
+        <div class="music-frame-container" id="musicContainer">
+            <iframe width="100%" height="155" src="https://www.youtube.com/embed/NFsEqOBG51M?controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="music-toggle" onclick="toggleMusic()" title="Play Music">
+            🎵
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <p>© 2026 Aditya & Shriya. Made with Love.</p>
@@ -766,6 +827,12 @@
             }).catch(err => {
                 console.error('Failed to copy: ', err);
             });
+        }
+
+        // 4. Toggle Music Widget
+        function toggleMusic() {
+            const container = document.getElementById('musicContainer');
+            container.classList.toggle('active');
         }
     </script>
 </body>
