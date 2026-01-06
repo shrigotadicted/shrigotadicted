@@ -108,7 +108,7 @@
         }
 
         /* =========================================
-           WELCOME OVERLAY (Autoplay Fix)
+           WELCOME OVERLAY
            ========================================= */
         #welcome-overlay {
             position: fixed;
@@ -171,7 +171,6 @@
         .logo img {
             height: 50px;
             width: auto;
-            /* MAROON BACKGROUND FOR LOGO */
             background-color: var(--primary-color); 
             padding: 5px;
             border-radius: 4px;
@@ -266,7 +265,7 @@
         }
 
         /* =========================================
-           OUR STORY (Alternating Layout)
+           OUR STORY
            ========================================= */
         .story-item {
             display: flex;
@@ -299,7 +298,7 @@
         .story-img {
             flex: 1;
             height: 400px;
-            position: relative; /* Needed for carousel absolute positioning */
+            position: relative;
         }
         
         .story-img img {
@@ -310,7 +309,6 @@
             box-shadow: 10px 10px 0px rgba(212, 175, 55, 0.2);
         }
 
-        /* CAROUSEL STYLES (FADE) */
         .carousel-fade {
             width: 100%;
             height: 100%;
@@ -319,18 +317,15 @@
         
         .carousel-fade img {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
         
-        .carousel-fade img.active {
-            opacity: 1;
-        }
+        .carousel-fade img.active { opacity: 1; }
 
         /* =========================================
-           EVENTS
+           EVENTS (UPDATED FOR IMAGE HOVER)
            ========================================= */
         #events { background: white; }
         
@@ -348,24 +343,59 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
 
+        /* 1. Background Image Layer (Hidden by default) */
         .event-card::before {
             content: "";
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 5px;
-            background: var(--accent-color);
-            transform: scaleX(0);
-            transition: transform 0.3s;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Uses the CSS variable set in HTML */
+            background-image: var(--bg-image); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -2;
         }
 
+        /* 2. Overlay Layer (For text readability on hover) */
+        .event-card::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.85));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        /* Hover Interactions */
         .event-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: transparent;
         }
 
-        .event-card:hover::before {
-            transform: scaleX(1);
+        .event-card:hover::before,
+        .event-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Text Color Shift on Hover */
+        .event-card h3, 
+        .event-card .event-meta,
+        .event-card .event-details {
+            transition: color 0.3s ease;
+        }
+
+        .event-card:hover h3, 
+        .event-card:hover .event-meta,
+        .event-card:hover .event-details div,
+        .event-card:hover .event-details p {
+            color: #FFFFFF !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
         }
 
         .event-card h3 {
@@ -443,7 +473,6 @@
             position: relative;
         }
         
-        /* Corner decorations using CSS gradients */
         .rsvp-container::before {
             content: "";
             position: absolute;
@@ -663,7 +692,7 @@
             <div class="section-divider">The Celebrations</div>
             <div class="events-grid reveal">
                 
-                <div class="event-card">
+                <div class="event-card" style="--bg-image: url('Sagaai.png');">
                     <span class="event-meta">June 21st • 12:00 PM</span>
                     <h3>Sagaai</h3>
                     <div class="event-details">
@@ -672,7 +701,7 @@
                     </div>
                 </div>
 
-                <div class="event-card">
+                <div class="event-card" style="--bg-image: url('Sangeet.png');">
                     <span class="event-meta">June 21st • 8:00 PM</span>
                     <h3>Sangeet</h3>
                     <div class="event-details">
@@ -681,7 +710,7 @@
                     </div>
                 </div>
 
-                <div class="event-card">
+                <div class="event-card" style="--bg-image: url('Haldi.png');">
                     <span class="event-meta">June 22nd • 10:00 AM</span>
                     <h3>Haldi</h3>
                     <div class="event-details">
@@ -690,12 +719,12 @@
                     </div>
                 </div>
 
-                <div class="event-card" style="background-color: var(--primary-color); color: white;">
-                    <span class="event-meta" style="color: var(--accent-color);">June 22nd • 5:00 PM</span>
-                    <h3 style="color: white;">The Wedding</h3>
+                <div class="event-card" style="--bg-image: url('Shaadi.png');">
+                    <span class="event-meta">June 22nd • 5:00 PM</span>
+                    <h3>The Wedding</h3>
                     <div class="event-details">
-                        <div style="color: #ddd;">Traditional Indian</div>
-                        <p style="color: #ccc;">Baraat followed by Varmala and Pheras.</p>
+                        <div>Traditional Indian</div>
+                        <p>Baraat followed by Varmala and Pheras.</p>
                     </div>
                 </div>
 
@@ -836,7 +865,7 @@
                 carouselImages[currentSlide].classList.remove('active');
                 currentSlide = (currentSlide + 1) % carouselImages.length;
                 carouselImages[currentSlide].classList.add('active');
-            }, 3000); // Change image every 3 seconds
+            }, 3000); 
         }
     </script>
 </body>
