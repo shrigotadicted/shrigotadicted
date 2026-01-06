@@ -84,7 +84,6 @@
             position: relative;
         }
 
-        /* Divider Decoration */
         .section-divider {
             text-align: center;
             margin-bottom: 3rem;
@@ -96,7 +95,6 @@
             display: inline-block;
         }
 
-        /* Animation Classes */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -209,10 +207,11 @@
            ========================================= */
         #hero {
             height: 100vh;
+            /* IMPORTANT: Ensure 'IMG_5169.JPG' matches your filename EXACTLY (Case Sensitive) */
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('IMG_5169.JPG');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-attachment: fixed; /* Works on Desktop */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -237,7 +236,6 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
-        /* Countdown */
         .countdown {
             display: flex;
             justify-content: center;
@@ -299,6 +297,8 @@
             flex: 1;
             height: 400px;
             position: relative;
+            background-color: #eee; /* Fallback to show container if image breaks */
+            border-radius: 4px;
         }
         
         .story-img img {
@@ -309,23 +309,33 @@
             box-shadow: 10px 10px 0px rgba(212, 175, 55, 0.2);
         }
 
+        /* Carousel Styles */
         .carousel-fade {
             width: 100%;
             height: 100%;
             position: relative;
+            overflow: hidden; /* Ensures no overflow */
+            border-radius: 4px;
         }
         
         .carousel-fade img {
             position: absolute;
             top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             opacity: 0;
             transition: opacity 1s ease-in-out;
+            z-index: 1;
         }
         
-        .carousel-fade img.active { opacity: 1; }
+        .carousel-fade img.active { 
+            opacity: 1; 
+            z-index: 2;
+        }
 
         /* =========================================
-           EVENTS (RESPONSIVE FIX)
+           EVENTS
            ========================================= */
         #events { background: white; }
         
@@ -354,12 +364,12 @@
             background-image: var(--bg-image); 
             background-size: cover;
             background-position: center;
-            opacity: 0; /* Hidden by default on Desktop */
+            opacity: 0; 
             transition: opacity 0.5s ease;
             z-index: -2;
         }
 
-        /* Overlay Layer - MADE LIGHTER (0.6 opacity) */
+        /* Overlay Layer */
         .event-card::after {
             content: "";
             position: absolute;
@@ -370,7 +380,7 @@
             z-index: -1;
         }
 
-        /* Desktop Hover Interactions */
+        /* Desktop Interactions */
         @media (min-width: 769px) {
             .event-card:hover {
                 transform: translateY(-10px);
@@ -383,7 +393,6 @@
                 opacity: 1;
             }
 
-            /* Text Color Shift on Hover */
             .event-card:hover h3, 
             .event-card:hover .event-meta,
             .event-card:hover .event-details div,
@@ -574,9 +583,16 @@
         }
 
         /* =========================================
-           RESPONSIVE
+           RESPONSIVE MOBILE STYLES
            ========================================= */
         @media (max-width: 768px) {
+            /* 1. HERO IMAGE FIX FOR IPHONE */
+            #hero {
+                /* 'fixed' causes images to disappear on iOS. Switch to 'scroll'. */
+                background-attachment: scroll;
+                background-position: center center;
+            }
+
             h1 { font-size: 3rem; }
             .script-font { font-size: 2.5rem; }
             
@@ -609,9 +625,8 @@
 
             /* Event Cards Mobile Fix (Always show image) */
             .event-card::before { opacity: 1; } 
-            .event-card::after { opacity: 1; } /* Overlay always on */
+            .event-card::after { opacity: 1; } 
             
-            /* Text always white on mobile */
             .event-card h3, 
             .event-card .event-meta,
             .event-card .event-details div,
