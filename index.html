@@ -325,7 +325,7 @@
         .carousel-fade img.active { opacity: 1; }
 
         /* =========================================
-           EVENTS (UPDATED FOR IMAGE HOVER)
+           EVENTS (RESPONSIVE FIX)
            ========================================= */
         #events { background: white; }
         
@@ -346,61 +346,57 @@
             z-index: 1;
         }
 
-        /* 1. Background Image Layer (Hidden by default) */
+        /* Background Image Layer */
         .event-card::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Uses the CSS variable set in HTML */
             background-image: var(--bg-image); 
             background-size: cover;
             background-position: center;
-            opacity: 0;
+            opacity: 0; /* Hidden by default on Desktop */
             transition: opacity 0.5s ease;
             z-index: -2;
         }
 
-        /* 2. Overlay Layer (For text readability on hover) */
+        /* Overlay Layer - MADE LIGHTER (0.6 opacity) */
         .event-card::after {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.85));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
             opacity: 0;
             transition: opacity 0.5s ease;
             z-index: -1;
         }
 
-        /* Hover Interactions */
-        .event-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            border-color: transparent;
-        }
+        /* Desktop Hover Interactions */
+        @media (min-width: 769px) {
+            .event-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+                border-color: transparent;
+            }
 
-        .event-card:hover::before,
-        .event-card:hover::after {
-            opacity: 1;
-        }
+            .event-card:hover::before,
+            .event-card:hover::after {
+                opacity: 1;
+            }
 
-        /* Text Color Shift on Hover */
-        .event-card h3, 
-        .event-card .event-meta,
-        .event-card .event-details {
-            transition: color 0.3s ease;
-        }
-
-        .event-card:hover h3, 
-        .event-card:hover .event-meta,
-        .event-card:hover .event-details div,
-        .event-card:hover .event-details p {
-            color: #FFFFFF !important;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            /* Text Color Shift on Hover */
+            .event-card:hover h3, 
+            .event-card:hover .event-meta,
+            .event-card:hover .event-details div,
+            .event-card:hover .event-details p {
+                color: #FFFFFF !important;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            }
         }
 
         .event-card h3 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
         }
 
         .event-meta {
@@ -411,11 +407,13 @@
             letter-spacing: 1px;
             margin-bottom: 1.5rem;
             display: block;
+            transition: color 0.3s ease;
         }
 
-        .event-details div {
+        .event-details div, .event-details p {
             margin-bottom: 5px;
             color: #555;
+            transition: color 0.3s ease;
         }
 
         /* =========================================
@@ -581,6 +579,11 @@
         @media (max-width: 768px) {
             h1 { font-size: 3rem; }
             .script-font { font-size: 2.5rem; }
+            
+            /* RSVP Mobile Alignment Fix */
+            .rsvp-container { padding: 2.5rem 1rem; }
+            .rsvp-container h2 { font-size: 1.8rem; line-height: 1.3; }
+
             .story-item, .story-item:nth-child(even) { flex-direction: column; gap: 1rem; }
             .story-text { border: none !important; text-align: center !important; padding: 1rem; }
             .venue-wrapper { flex-direction: column; }
@@ -602,6 +605,19 @@
             }
             .nav-links.active {
                 clip-path: circle(150% at 100% 0);
+            }
+
+            /* Event Cards Mobile Fix (Always show image) */
+            .event-card::before { opacity: 1; } 
+            .event-card::after { opacity: 1; } /* Overlay always on */
+            
+            /* Text always white on mobile */
+            .event-card h3, 
+            .event-card .event-meta,
+            .event-card .event-details div,
+            .event-card .event-details p {
+                color: #FFFFFF !important;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.8);
             }
         }
     </style>
